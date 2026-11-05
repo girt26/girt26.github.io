@@ -1,100 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tools Portal</title>
-    <style>
-        body { font-family: sans-serif; background: #121212; color: #fff; text-align: center; padding-top: 50px; }
-        .menu { display: flex; flex-direction: column; gap: 15px; max-width: 300px; margin: 0 auto; }
-        .warning-separator {
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ff4444, transparent);
-            margin: 8px 0;
-        }
-        a { padding: 15px; background: #222; color: #00ffcc; text-decoration: none; border-radius: 8px; border: 1px solid #333; font-weight: bold; }
-        a.thiscord { color: #7289da; }
-        a.warning { background: #3a1d1d; color: #ff8a80; border-color: #ff4444; }
-        a:hover { background: #333; }
-        a.thiscord:hover { background: #333; color: #7289da; }
-        a.warning:hover { background: #4a2424; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#232428">
+  <meta name="description" content="A simple home for Girt's projects and tools.">
+  <title>Girt's Hub</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #1e1f22;
+      --panel: #2b2d31;
+      --panel-hover: #35373c;
+      --line: rgba(255,255,255,.08);
+      --muted: #a1a1aa;
+      --text: #f2f3f5;
+      --accent: #5865f2;
+      --accent-hover: #4752c4;
+    }
 
-        /* Password gate */
-        #gate { max-width: 300px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
-        #gate input { padding: 14px; font-size: 16px; border-radius: 8px; border: 1px solid #333; background: #222; color: #fff; }
-        #gate button { padding: 14px; font-size: 16px; font-weight: bold; border-radius: 8px; border: 1px solid #333; background: #222; color: #00ffcc; cursor: pointer; }
-        #gate button:hover { background: #333; }
-        #error { color: #ff8a80; min-height: 1.2em; margin: 0; }
-    </style>
+    * { box-sizing: border-box; }
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 28px 18px;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 50% -18%, rgba(88,101,242,.23), transparent 54%),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .shell { width: min(100%, 760px); }
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+      color: #c9cbd0;
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      color: #fff;
+      background: linear-gradient(145deg, #5865f2, #7983ff);
+      box-shadow: 0 8px 24px rgba(88,101,242,.25);
+    }
+    .brand-mark svg { width: 23px; height: 23px; }
+
+    .panel {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(43,45,49,.92);
+      box-shadow: 0 24px 80px rgba(0,0,0,.32);
+      backdrop-filter: blur(12px);
+    }
+    .intro { padding: clamp(28px, 7vw, 58px); }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      color: #b8bdff;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #7c86ff;
+      content: "";
+      box-shadow: 0 0 14px rgba(124,134,255,.8);
+    }
+    h1 {
+      max-width: 600px;
+      margin: 0;
+      color: #fff;
+      font-size: clamp(2.4rem, 8vw, 4.5rem);
+      line-height: .99;
+      letter-spacing: -.065em;
+    }
+    .description {
+      max-width: 500px;
+      margin: 20px 0 0;
+      color: #b5bac1;
+      font-size: clamp(1rem, 2.8vw, 1.12rem);
+      line-height: 1.7;
+    }
+    .menu-heading {
+      margin: 0 0 12px;
+      color: #b5bac1;
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .menu { margin-top: 34px; }
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 86px;
+      padding: 16px 18px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      color: #fff;
+      background: #232428;
+      text-decoration: none;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .menu-link:hover {
+      transform: translateY(-2px);
+      border-color: rgba(88,101,242,.65);
+      background: var(--panel-hover);
+      box-shadow: 0 12px 28px rgba(0,0,0,.2);
+    }
+    .menu-link:focus-visible { outline: 3px solid #a5adff; outline-offset: 3px; }
+    .discord-icon {
+      width: 50px;
+      height: 50px;
+      flex: 0 0 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: #fff;
+      background: var(--accent);
+    }
+    .discord-icon svg { width: 29px; height: 24px; }
+    .link-copy { min-width: 0; flex: 1; }
+    .link-title { display: block; font-size: 1.05rem; font-weight: 800; }
+    .link-detail { display: block; margin-top: 4px; color: #b5bac1; font-size: .84rem; }
+    .arrow {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 auto;
+      color: #b5bac1;
+      transition: transform .18s ease, color .18s ease;
+    }
+    .menu-link:hover .arrow { transform: translateX(3px); color: #fff; }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px clamp(28px, 7vw, 58px);
+      border-top: 1px solid var(--line);
+      color: #858991;
+      font-size: .78rem;
+    }
+    @media (max-width: 480px) {
+      .footer { flex-direction: column; }
+      .menu-link { gap: 12px; padding: 14px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
 </head>
 <body>
-    <div id="gate">
-        <h1>Tools</h1>
-        <p>Enter the password to continue:</p>
-        <input type="password" id="pw" placeholder="Password" autocomplete="current-password" autofocus>
-        <button id="go">Unlock</button>
-        <p id="error"></p>
+  <main class="shell">
+    <div class="topbar">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7.2 7.5a12.3 12.3 0 0 1 3-.9l.4.8a11 11 0 0 1 2.8 0l.4-.8a12.3 12.3 0 0 1 3 .9c1.9 2.8 2.4 5.5 2.1 8.2a12 12 0 0 1-3.7 1.9l-.8-1.3c.5-.2 1-.5 1.4-.8-2.7 1.3-5.8 1.3-8.5 0 .4.3.9.6 1.4.8l-.8 1.3a12 12 0 0 1-3.7-1.9c-.3-2.7.2-5.4 2.1-8.2Z" fill="currentColor"/><circle cx="9.5" cy="12.2" r="1.1" fill="#5865f2"/><circle cx="14.5" cy="12.2" r="1.1" fill="#5865f2"/></svg>
+      </span>
+      <span>GIRT'S HUB</span>
     </div>
-    <div id="content"></div>
 
-    <script>
-        // Menu is encrypted with AES-256-GCM; key derived from the password via PBKDF2-SHA256.
-        // Layout of the blob: salt(16) | iv(12) | ciphertext + auth tag
-        const ITERATIONS = 600000;
-        const BLOB = 'd7sx1Zz4zurBougqqeCYbHBJpEEtJRnCgTtD8E33Ht/jw7qzIMB5EAtYjvUQjfCZdP1AFD2m8DGrz5rXWHBX/tHqvpBpeRTxELt6uQEiyrtnB+jYmKI4uxm2hFEF4vyh2Dbur2lQAm0nWXGb3AVmI8giv1wNbcW9btY6wWXC//ptpkbtwIYsKyBd0lqqVP4ajVtiQjb5+OLZltXwKjy8DGe2v1GhTywODXpeWwh7cQUz8K+DA08fIuK3/ENufqBqWBcJoZY9DkwWpVmUEouE4Fh+8wNF1mMqGahqHVAI2CBNSfPVfEvsjL/N70clzIoeOmXwzGZAJJ6bz3FXdr+30mCbIbRA7gaLhjWDxBY/cHO6KQ2rB5hRPpOUXQsZOLswSqztbyL1C2IRz72+u8lHfNJ5pAlslzvIqi9HgI0Mg2uBpK/3QkQbjmY7IJBpjfWREyJTbQ443Z1Nf/+Ou+uN71rU3vxJ3rex5HdAJ/wtcGModeyj6m1FLL5IFgixWcYwlY1s3qVCdw8a4Kih4+Dx2Z2p8ceX';
+    <section class="panel" aria-labelledby="page-title">
+      <div class="intro">
+        <p class="eyebrow">Projects &amp; places</p>
+        <h1 id="page-title">A little hub<br>for the good stuff.</h1>
+        <p class="description">Pick a destination and jump right in. Your shortcuts, all in one place.</p>
 
-        function b64ToBytes(b64) {
-            return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
-        }
-
-        async function decrypt(password) {
-            const data = b64ToBytes(BLOB);
-            const salt = data.slice(0, 16);
-            const iv = data.slice(16, 28);
-            const ct = data.slice(28);
-            const baseKey = await crypto.subtle.importKey(
-                'raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']);
-            const key = await crypto.subtle.deriveKey(
-                { name: 'PBKDF2', salt, iterations: ITERATIONS, hash: 'SHA-256' },
-                baseKey, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
-            const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
-            return new TextDecoder().decode(plain);
-        }
-
-        async function tryUnlock(password) {
-            try {
-                const html = await decrypt(password);
-                document.getElementById('content').innerHTML = html;
-                document.getElementById('gate').style.display = 'none';
-                try { sessionStorage.setItem('portal_pw', password); } catch (e) {}
-                return true;
-            } catch (e) {
-                return false;
-            }
-        }
-
-        async function attempt() {
-            const input = document.getElementById('pw');
-            const btn = document.getElementById('go');
-            btn.disabled = true;
-            document.getElementById('error').textContent = '';
-            const ok = await tryUnlock(input.value);
-            btn.disabled = false;
-            if (!ok) {
-                document.getElementById('error').textContent = 'Wrong password';
-                input.value = '';
-                input.focus();
-            }
-        }
-
-        document.getElementById('go').addEventListener('click', attempt);
-        document.getElementById('pw').addEventListener('keydown', e => { if (e.key === 'Enter') attempt(); });
-
-        try {
-            const saved = sessionStorage.getItem('portal_pw');
-            if (saved) tryUnlock(saved);
-        } catch (e) {}
-    </script>
+        <nav class="menu" aria-label="Website menu">
+          <h2 class="menu-heading">Menu</h2>
+          <a class="menu-link" href="https://girt26.github.io/thiscord">
+            <span class="discord-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.7 5.1A18.2 18.2 0 0 0 15.2 3.7l-.6 1.2a16.8 16.8 0 0 0-5.2 0l-.6-1.2a18.2 18.2 0 0 0-4.5 1.4C1.5 9.3.7 13.4 1.1 17.4a18.4 18.4 0 0 0 5.5 2.8l1.2-1.9a11.8 11.8 0 0 1-1.9-.9l.5-.4c3.7 1.7 7.7 1.7 11.4 0l.5.4a11.8 11.8 0 0 1-1.9.9l1.2 1.9a18.4 18.4 0 0 0 5.5-2.8c.5-4.6-.8-8.7-3.4-12.3ZM8.8 14.8c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.4 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z"/></svg>
+            </span>
+            <span class="link-copy">
+              <span class="link-title">Thiscord</span>
+              <span class="link-detail">Open the Thiscord chat</span>
+            </span>
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </nav>
+      </div>
+      <footer class="footer">
+        <span>Simple links. One convenient place.</span>
+        <span>© <span id="year"></span> Girt</span>
+      </footer>
+    </section>
+  </main>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
