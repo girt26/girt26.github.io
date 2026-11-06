@@ -1,19 +1,17 @@
 # main
 
-main landing page for my website
+Landing page for girt26.github.io. A quiet editorial index of the things I host.
 
-## Editing the menu
+## Editing the index
 
-Open `index.html` and find the `LINKS` array near the top of `<body>`. Each row is one menu card:
+Open `index.html` and find the `LINKS` array near the top of `<body>`. Each row is one entry:
 
 ```js
-{ title: "Eaglercraft 26.2", description: "Play Eaglercraft in your browser", url: "https://girt26.github.io/zeuscraft", icon: "blocks", accent: "#34d399" },
+{ title: "Eaglercraft 26.2", note: "Minecraft in the browser", url: "https://girt26.github.io/zeuscraft" },
 ```
 
-- `title` — card heading
-- `description` — one short line below it
-- `url` — where the card links to
-- `icon` — `discord`, `blocks`, `globe`, `gamepad`, `github`, or `link`
-- `accent` — hex color for the card's icon and glow
+- `title` — entry name
+- `note` — optional one-line description
+- `url` — where the entry links to
 
-Add a new line, save, and the menu (plus the link counter) updates automatically.
+Add another row, save, and the index and entry count update automatically. The layout switches between light and dark automatically based on the visitor's system preference.
