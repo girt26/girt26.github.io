@@ -3,191 +3,445 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#1a1a1a">
+  <meta name="theme-color" content="#070a12">
   <meta name="description" content="A simple home for Girt">
   <title>GirtHub</title>
   <style>
     :root {
       color-scheme: dark;
-      --bg: #111111;
-      --panel: #1b1b1b;
-      --panel-hover: #292929;
-      --line: rgba(255,255,255,.09);
-      --muted: #a1a1aa;
-      --text: #f2f3f5;
-      --accent: #FFA500;
-      --accent-hover: #e69500;
+      --bg: #070a12;
+      --panel: rgba(17, 24, 39, .78);
+      --card: rgba(24, 32, 50, .72);
+      --card-hover: rgba(34, 45, 68, .9);
+      --line: rgba(148, 163, 184, .14);
+      --line-strong: rgba(148, 163, 184, .26);
+      --text: #f1f5ff;
+      --muted: #9aa7c2;
+      --accent: #8b5cf6;
+      --accent-2: #22d3ee;
+      --accent-soft: #a78bfa;
     }
 
     * { box-sizing: border-box; }
+
+    html { background: var(--bg); }
+
     body {
       min-width: 320px;
       min-height: 100vh;
       margin: 0;
       display: grid;
       place-items: center;
-      padding: 28px 18px;
+      padding: 32px 18px;
       color: var(--text);
       background:
-        radial-gradient(ellipse at 50% -18%, rgba(255,165,0,.18), transparent 54%),
+        radial-gradient(60rem 40rem at 12% -12%, rgba(139, 92, 246, .22), transparent 60%),
+        radial-gradient(50rem 36rem at 92% -6%, rgba(34, 211, 238, .14), transparent 60%),
+        radial-gradient(46rem 32rem at 50% 118%, rgba(236, 72, 153, .10), transparent 62%),
         var(--bg);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    .shell { width: min(100%, 760px); }
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      content: "";
+      background-image:
+        linear-gradient(rgba(148, 163, 184, .05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, .05) 1px, transparent 1px);
+      background-size: 64px 64px;
+      -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 10%, transparent 72%);
+      mask-image: radial-gradient(ellipse at 50% 0%, #000 10%, transparent 72%);
+    }
+
+    ::selection { background: rgba(139, 92, 246, .45); color: #fff; }
+
+    .shell {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 800px);
+    }
+
+    /* ---------- Top bar ---------- */
     .topbar {
       display: flex;
       align-items: center;
-      margin-bottom: 22px;
-      color: #fff;
-      font-size: 1.15rem;
-      font-weight: 900;
-      letter-spacing: -.035em;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 4px 20px;
     }
-    .brand-hub { color: var(--accent); }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: 1.02rem;
+      font-weight: 800;
+      letter-spacing: -.025em;
+    }
+    .brand-mark {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border-radius: 9px;
+      color: #07101f;
+      background: linear-gradient(135deg, var(--accent-soft), var(--accent-2));
+      box-shadow: 0 8px 22px -8px rgba(139, 92, 246, .9);
+      font-size: .88rem;
+      font-weight: 900;
+    }
+    .brand-hub {
+      background: linear-gradient(100deg, var(--accent-soft), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .topbar-meta {
+      color: var(--muted);
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .01em;
+    }
 
+    /* ---------- Panel ---------- */
     .panel {
+      position: relative;
       overflow: hidden;
       border: 1px solid var(--line);
-      border-radius: 24px;
-      background: rgba(27,27,27,.94);
-      box-shadow: 0 24px 80px rgba(0,0,0,.4);
-      backdrop-filter: blur(12px);
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(22, 30, 48, .88), rgba(11, 16, 28, .92));
+      box-shadow:
+        0 40px 100px -30px rgba(0, 0, 0, .85),
+        inset 0 1px 0 rgba(255, 255, 255, .045);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
-    .intro { padding: clamp(28px, 7vw, 58px); }
+    .panel::before {
+      position: absolute;
+      inset: 0 0 auto;
+      height: 1px;
+      content: "";
+      background: linear-gradient(90deg, transparent, rgba(139, 92, 246, .8), rgba(34, 211, 238, .8), transparent);
+    }
+
+    .intro { padding: clamp(26px, 6vw, 50px); }
+
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
       margin: 0 0 18px;
-      color: var(--accent);
+      color: var(--accent-soft);
       font-size: .72rem;
-      font-weight: 800;
-      letter-spacing: .13em;
+      font-weight: 700;
+      letter-spacing: .15em;
       text-transform: uppercase;
     }
     .eyebrow::before {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: var(--accent);
+      background: linear-gradient(135deg, var(--accent-soft), var(--accent-2));
+      box-shadow: 0 0 14px rgba(139, 92, 246, .9);
       content: "";
-      box-shadow: 0 0 14px rgba(255,165,0,.75);
     }
+
     h1 {
-      max-width: 600px;
+      max-width: 620px;
       margin: 0;
       color: #fff;
-      font-size: clamp(2.4rem, 8vw, 4.5rem);
-      line-height: .99;
-      letter-spacing: -.065em;
+      font-size: clamp(2.15rem, 6.4vw, 3.9rem);
+      line-height: 1.02;
+      letter-spacing: -.055em;
     }
+    h1 .grad {
+      background: linear-gradient(100deg, #c4b5fd 0%, #8b5cf6 46%, #22d3ee 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: var(--accent-soft);
+    }
+
     .description {
-      max-width: 500px;
-      margin: 20px 0 0;
-      color: #b5bac1;
-      font-size: clamp(1rem, 2.8vw, 1.12rem);
+      max-width: 510px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: clamp(.98rem, 2.4vw, 1.08rem);
       line-height: 1.7;
     }
-    .menu-heading {
-      margin: 0 0 12px;
-      color: #b5bac1;
-      font-size: .75rem;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .menu { margin-top: 34px; }
-    .menu-link {
+
+    /* ---------- Menu ---------- */
+    .menu { margin-top: 36px; }
+
+    .menu-head {
       display: flex;
       align-items: center;
-      gap: 16px;
-      min-height: 86px;
-      padding: 16px 18px;
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 16px;
-      color: #fff;
-      background: #222;
-      text-decoration: none;
-      transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+      gap: 12px;
+      margin: 0 0 14px;
     }
-    .menu-link:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255,165,0,.7);
-      background: var(--panel-hover);
-      box-shadow: 0 12px 28px rgba(0,0,0,.25);
+    .menu-heading {
+      margin: 0;
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
     }
-    .menu-link:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-    .discord-icon {
-      width: 50px;
-      height: 50px;
-      flex: 0 0 50px;
+    .link-count {
+      padding: 3px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(148, 163, 184, .06);
+      font-size: .66rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+    .menu-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--line), transparent);
+    }
+
+    .menu-list {
       display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      position: relative;
+      isolation: isolate;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 14px;
+      min-height: 106px;
+      padding: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(32, 42, 64, .66), rgba(17, 24, 39, .72));
+      text-decoration: none;
+      transition:
+        transform .22s cubic-bezier(.2, .7, .3, 1),
+        border-color .22s ease,
+        background .22s ease,
+        box-shadow .22s ease;
+    }
+    .card::before {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      content: "";
+      background: radial-gradient(120% 120% at 0% 0%, var(--card-accent, #8b5cf6), transparent 58%);
+      opacity: 0;
+      transition: opacity .22s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--card-accent, var(--accent));
+      background: linear-gradient(180deg, rgba(39, 51, 78, .82), rgba(21, 29, 47, .9));
+      box-shadow: 0 22px 48px -24px rgba(0, 0, 0, .9);
+    }
+    .card:hover::before { opacity: .12; }
+    .card:focus-visible {
+      outline: 3px solid var(--accent-2);
+      outline-offset: 3px;
+    }
+
+    .card-icon {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 46px;
       place-items: center;
-      border-radius: 15px;
-      color: #171717;
-      background: var(--accent);
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      color: var(--card-accent, var(--accent-soft));
+      background: rgba(139, 92, 246, .12);
+      box-shadow: 0 0 28px -12px var(--card-accent, var(--accent));
     }
-    .discord-icon svg { width: 29px; height: 24px; }
-    .link-copy { min-width: 0; flex: 1; }
-    .link-title { display: block; font-size: 1.05rem; font-weight: 800; }
-    .link-detail { display: block; margin-top: 4px; color: #b5bac1; font-size: .84rem; }
-    .arrow {
-      width: 20px;
-      height: 20px;
-      flex: 0 0 auto;
-      color: var(--accent);
-      transition: transform .18s ease, color .18s ease;
+    .card-icon svg { width: 22px; height: 22px; }
+
+    .card-body { min-width: 0; }
+    .card-title {
+      display: block;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -.015em;
     }
-    .menu-link:hover .arrow { transform: translateX(3px); color: #fff; }
+    .card-detail {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .83rem;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+    .card-detail:empty { display: none; }
+
+    .card-arrow {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--muted);
+      transition:
+        color .22s ease,
+        border-color .22s ease,
+        background .22s ease,
+        transform .22s ease;
+    }
+    .card-arrow svg { width: 16px; height: 16px; }
+    .card:hover .card-arrow {
+      color: #fff;
+      border-color: var(--card-accent, var(--accent));
+      background: rgba(148, 163, 184, .1);
+      transform: translate(2px, -2px);
+    }
+
+    /* ---------- Footer ---------- */
     .footer {
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      padding: 18px clamp(28px, 7vw, 58px);
+      padding: 17px clamp(26px, 6vw, 50px);
       border-top: 1px solid var(--line);
-      color: #858585;
-      font-size: .78rem;
+      color: #7f8ca6;
+      background: rgba(7, 10, 18, .25);
+      font-size: .76rem;
     }
-    @media (max-width: 480px) {
-      .footer { flex-direction: column; }
-      .menu-link { gap: 12px; padding: 14px; }
+
+    @media (max-width: 520px) {
+      body { padding: 22px 14px; }
+      .topbar-meta { display: none; }
+      .footer { flex-direction: column; gap: 6px; }
+      .card { gap: 12px; padding: 15px; }
+      .card-icon { width: 42px; height: 42px; flex-basis: 42px; }
     }
+
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- ============================================================
+       LINKS CONFIG — edit this list to change the menu.
+       Each line is one card:
+         title       label on the card
+         description small line underneath
+         url         where the card goes
+         icon        discord | blocks | globe | gamepad | github | link
+         accent      hex color for that card's icon/glow
+       ============================================================ -->
+  <script>
+    const LINKS = [
+      { title: "Thiscord", description: "Open the Thiscord client", url: "https://girt26.github.io/thiscord", icon: "discord", accent: "#8b9dff" },
+      { title: "Eaglercraft 26.2", description: "Play Eaglercraft in your browser", url: "https://girt26.github.io/zeuscraft", icon: "blocks", accent: "#34d399" },
+
+      // Copy the line below to add another card:
+      // { title: "New link", description: "Short description", url: "https://example.com", icon: "globe", accent: "#22d3ee" },
+    ];
+  </script>
+
   <main class="shell">
-    <div class="topbar" aria-label="GirtHub"><span>Girt</span><span class="brand-hub">&nbsp;Hub</span></div>
+    <div class="topbar">
+      <div class="brand" aria-label="GirtHub">
+        <span class="brand-mark" aria-hidden="true">G</span>
+        <span>Girt<span class="brand-hub">Hub</span></span>
+      </div>
+      <span class="topbar-meta">girt26.github.io</span>
+    </div>
 
     <section class="panel" aria-labelledby="page-title">
       <div class="intro">
         <p class="eyebrow">Projects</p>
-        <h1 id="page-title">A little hub<br>for the good stuff.</h1>
+        <h1 id="page-title">A little hub<br><span class="grad">for the good stuff.</span></h1>
         <p class="description">Pick a destination and jump right in. Your shortcuts, all in one place.</p>
 
         <nav class="menu" aria-label="Website menu">
-          <h2 class="menu-heading">Menu</h2>
-          <a class="menu-link" href="https://girt26.github.io/thiscord">
-            <span class="discord-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.7 5.1A18.2 18.2 0 0 0 15.2 3.7l-.6 1.2a16.8 16.8 0 0 0-5.2 0l-.6-1.2a18.2 18.2 0 0 0-4.5 1.4C1.5 9.3.7 13.4 1.1 17.4a18.4 18.4 0 0 0 5.5 2.8l1.2-1.9a11.8 11.8 0 0 1-1.9-.9l.5-.4c3.7 1.7 7.7 1.7 11.4 0l.5.4a11.8 11.8 0 0 1-1.9.9l1.2 1.9a18.4 18.4 0 0 0 5.5-2.8c.5-4.6-.8-8.7-3.4-12.3ZM8.8 14.8c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.4 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z"/></svg>
-            </span>
-            <span class="link-copy">
-              <span class="link-title">Thiscord</span>
-              <span class="link-detail">Open Thiscord client</span>
-            </span>
-            <svg class="arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
+          <div class="menu-head">
+            <h2 class="menu-heading">Menu</h2>
+            <span class="link-count" id="link-count">0 links</span>
+            <span class="menu-rule" aria-hidden="true"></span>
+          </div>
+          <div class="menu-list" id="menu-list"></div>
         </nav>
       </div>
+
       <footer class="footer">
         <span>One convenient place.</span>
         <span>© <span id="year"></span> Girt</span>
       </footer>
     </section>
   </main>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+  <script>
+    const ICONS = {
+      discord: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.7 5.1A18.2 18.2 0 0 0 15.2 3.7l-.6 1.2a16.8 16.8 0 0 0-5.2 0l-.6-1.2a18.2 18.2 0 0 0-4.5 1.4C1.5 9.3.7 13.4 1.1 17.4a18.4 18.4 0 0 0 5.5 2.8l1.2-1.9a11.8 11.8 0 0 1-1.9-.9l.5-.4c3.7 1.7 7.7 1.7 11.4 0l.5.4a11.8 11.8 0 0 1-1.9.9l1.2 1.9a18.4 18.4 0 0 0 5.5-2.8c.5-4.6-.8-8.7-3.4-12.3ZM8.8 14.8c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.4 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z"/></svg>',
+      blocks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 3.6 7.4v9.2L12 21.2l8.4-4.6V7.4L12 2.8Z"/><path d="M3.6 7.4 12 12l8.4-4.6M12 12v9.2"/></svg>',
+      globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.6 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.6-3.8-9S9.5 5.5 12 3Z"/></svg>',
+      gamepad: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 8h9a4.5 4.5 0 0 1 4.4 5.4l-.6 3.1a2.4 2.4 0 0 1-4.1 1.3l-1.5-1.5H9.3l-1.5 1.5a2.4 2.4 0 0 1-4.1-1.3l-.6-3.1A4.5 4.5 0 0 1 7.5 8Z"/><path d="M7 12v2M6 13h2"/><circle cx="16.5" cy="12.5" r=".8" fill="currentColor" stroke="none"/><circle cx="18.2" cy="14.2" r=".8" fill="currentColor" stroke="none"/></svg>',
+      github: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>',
+      link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 13.5a4 4 0 0 0 5.7 0l2.8-2.8a4 4 0 0 0-5.7-5.7l-1.6 1.6"/><path d="M14 10.5a4 4 0 0 0-5.7 0l-2.8 2.8a4 4 0 0 0 5.7 5.7l1.6-1.6"/></svg>',
+      arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>'
+    };
+
+    const menuList = document.getElementById('menu-list');
+
+    const cards = LINKS.map(function (item) {
+      const card = document.createElement('a');
+      card.className = 'card';
+      card.href = item.url;
+      card.style.setProperty('--card-accent', item.accent || '#8b5cf6');
+
+      const icon = document.createElement('span');
+      icon.className = 'card-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.innerHTML = ICONS[item.icon] || ICONS.link;
+
+      const body = document.createElement('span');
+      body.className = 'card-body';
+
+      const title = document.createElement('span');
+      title.className = 'card-title';
+      title.textContent = item.title;
+
+      const detail = document.createElement('span');
+      detail.className = 'card-detail';
+      detail.textContent = item.description || '';
+
+      body.append(title, detail);
+
+      const arrow = document.createElement('span');
+      arrow.className = 'card-arrow';
+      arrow.setAttribute('aria-hidden', 'true');
+      arrow.innerHTML = ICONS.arrow;
+
+      card.append(icon, body, arrow);
+      return card;
+    });
+
+    menuList.replaceChildren.apply(menuList, cards);
+    document.getElementById('link-count').textContent =
+      LINKS.length + (LINKS.length === 1 ? ' link' : ' links');
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
