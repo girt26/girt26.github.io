@@ -27,6 +27,7 @@
       --accent: #a63f1c;
       --hover: rgba(166, 63, 28, .06);
       --selection: rgba(166, 63, 28, .18);
+      --status-green: #2e7d32;
       --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Noto Serif", serif;
       --sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
@@ -42,6 +43,7 @@
         --accent: #e08a5f;
         --hover: rgba(224, 138, 95, .07);
         --selection: rgba(224, 138, 95, .25);
+        --status-green: #66bb6a;
       }
     }
 
@@ -58,6 +60,9 @@
       margin: 0;
       color: var(--ink);
       background: var(--bg);
+      /* 1. Tactile background texture overlay */
+      background-image: radial-gradient(var(--line) 0.75px, transparent 0.75px);
+      background-size: 16px 16px;
       font-family: var(--sans);
       font-size: 16px;
       line-height: 1.5;
@@ -79,6 +84,18 @@
       border-radius: 2px;
     }
 
+    /* 5. Smooth load entrance animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .page {
       display: flex;
       flex-direction: column;
@@ -87,6 +104,7 @@
       min-height: 100vh;
       margin: 0 auto;
       padding: clamp(28px, 5vw, 56px) clamp(20px, 5vw, 48px) 28px;
+      animation: fadeInUp 0.6s ease-out forwards;
     }
 
     /* ---------- Masthead ---------- */
@@ -210,14 +228,53 @@
 
     .row-body { min-width: 0; }
 
+    .row-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* SVG Icon thematic integration */
+    .row-icon {
+      width: 1.15rem;
+      height: 1.15rem;
+      fill: currentColor;
+      color: var(--muted);
+      flex-shrink: 0;
+      transition: color .15s ease;
+    }
+
     .row-title {
-      display: block;
       font-family: var(--serif);
       font-size: 1.35rem;
       font-weight: 600;
       line-height: 1.2;
       letter-spacing: -.015em;
       transition: color .15s ease;
+    }
+
+    /* 3. Category Tags */
+    .row-tag {
+      font-family: var(--mono);
+      font-size: .62rem;
+      color: var(--muted);
+      border: 1px solid var(--line-strong);
+      padding: 1px 5px;
+      border-radius: 3px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+
+    /* 4. Live Status Indicator */
+    .status-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--status-green);
+      margin-right: 4px;
+      box-shadow: 0 0 6px var(--status-green);
+      vertical-align: middle;
     }
 
     .row-note {
@@ -258,7 +315,8 @@
       .link-row:hover { background: var(--hover); }
 
       .link-row:hover .row-title,
-      .link-row:hover .row-arrow { color: var(--accent); }
+      .link-row:hover .row-arrow,
+      .link-row:hover .row-icon { color: var(--accent); }
 
       .link-row .row-arrow {
         opacity: 0;
@@ -321,6 +379,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+      .page { animation: none; }
       *, *::before, *::after {
         scroll-behavior: auto !important;
         transition-duration: .01ms !important;
@@ -329,21 +388,16 @@
   </style>
 </head>
 <body>
-  <!-- ============================================================
-       LINKS CONFIG — edit the rows below to change the index.
-       Each row is one entry:
-         title   project name
-         note    optional one-line description
-         url     where the entry goes
-       Add a row by copying the line after the list.
-       ============================================================ -->
   <script>
-    const LINKS = [
-      { title: "Thiscord", note: "Discord client", url: "https://girt26.github.io/thiscord" },
-      { title: "Eaglercraft 26.2", note: "Minecraft in the browser", url: "https://girt26.github.io/zeuscraft" },
+    // Inline themed SVGs for Discord and Minecraft Block icons
+    const ICONS = {
+      thiscord: `<svg class="row-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>`,
+      minecraft: `<svg class="row-icon" viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.3l6.7 3.35L12 11 5.3 7.65 12 4.3zM4 9.15l7 3.5v7l-7-3.5v-7zm16 7l-7 3.5v-7l7-3.5v7z"/></svg>`
+    };
 
-      // Copy this line to add another entry:
-      // { title: "New link", note: "Short description", url: "https://example.com" },
+    const LINKS = [
+      { title: "Thiscord", note: "Thiscord client", tag: "App", icon: ICONS.thiscord, status: true, url: "https://girt26.github.io/thiscord" },
+      { title: "Eaglercraft 26.2", note: "Minecraft 26.2", tag: "Game", icon: ICONS.minecraft, status: true, url: "https://girt26.github.io/zeuscraft" },
     ];
   </script>
 
@@ -355,8 +409,8 @@
 
     <div class="layout">
       <aside class="intro">
-        <h1>Things<br>I host.</h1>
-        <p class="lede">Projects, tools, and other things I keep online.</p>
+        <h1>Random<br>Stuff</h1>
+        <p class="lede">Stuff you might use.</p>
         <p class="updated">Updated November 2026</p>
       </aside>
 
@@ -404,15 +458,37 @@
       const body = document.createElement('span');
       body.className = 'row-body';
 
+      const titleWrap = document.createElement('span');
+      titleWrap.className = 'row-title-wrap';
+
+      if (item.icon) {
+        titleWrap.innerHTML += item.icon;
+      }
+
       const title = document.createElement('span');
       title.className = 'row-title';
       title.textContent = item.title;
-      body.append(title);
+      titleWrap.append(title);
+
+      if (item.tag) {
+        const tag = document.createElement('span');
+        tag.className = 'row-tag';
+        tag.textContent = item.tag;
+        titleWrap.append(tag);
+      }
+
+      body.append(titleWrap);
 
       if (item.note) {
         const note = document.createElement('span');
         note.className = 'row-note';
-        note.textContent = item.note;
+        if (item.status) {
+          const statusDot = document.createElement('span');
+          statusDot.className = 'status-dot';
+          statusDot.title = 'Online';
+          note.prepend(statusDot);
+        }
+        note.append(document.createTextNode(item.note));
         body.append(note);
       }
 
