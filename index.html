@@ -479,8 +479,24 @@
     }
 
     .page {
+      position: relative;
+      z-index: 1;
       max-width: 1080px;
       padding-top: clamp(24px, 4vw, 42px);
+    }
+
+    body::before {
+      position: fixed;
+      z-index: 0;
+      inset: -35%;
+      background:
+        radial-gradient(ellipse at 18% 28%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 28%),
+        radial-gradient(ellipse at 76% 34%, var(--ambient-cool), transparent 26%),
+        radial-gradient(ellipse at 62% 82%, var(--ambient), transparent 24%);
+      content: "";
+      pointer-events: none;
+      animation: atmosphereDrift 28s ease-in-out infinite alternate;
+      will-change: transform;
     }
 
     .masthead {
@@ -507,6 +523,13 @@
       font-size: 1.12rem;
       line-height: 1;
       box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 25%, transparent);
+      animation: logoBreathe 4s ease-in-out infinite;
+      transition: transform .3s cubic-bezier(.2, .8, .2, 1), box-shadow .3s ease;
+    }
+
+    .wordmark:hover::before {
+      transform: rotate(-12deg) scale(1.12);
+      box-shadow: 0 7px 22px color-mix(in srgb, var(--accent) 38%, transparent);
     }
 
     .masthead-meta {
@@ -518,6 +541,19 @@
       width: 2.25rem;
       height: 2.25rem;
       border-radius: 8px;
+      transition: color .2s ease, border-color .2s ease, background-color .2s ease, transform .35s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .theme-toggle svg {
+      transition: transform .45s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(-8deg) scale(1.08);
+    }
+
+    .theme-toggle:hover svg {
+      transform: rotate(35deg);
     }
 
     .layout {
@@ -537,7 +573,30 @@
         radial-gradient(circle at 100% 0%, var(--ambient), transparent 52%),
         linear-gradient(145deg, var(--surface-raised), var(--surface));
       box-shadow: var(--card-shadow);
-      animation: fadeInUp .7s .04s both;
+      animation: heroArrive .9s cubic-bezier(.16, 1, .3, 1) .04s both;
+      transition: box-shadow .35s ease, border-color .35s ease, transform .35s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .intro:hover {
+      border-color: color-mix(in srgb, var(--accent) 38%, var(--line));
+      box-shadow: 0 24px 64px color-mix(in srgb, var(--accent) 11%, transparent), var(--card-shadow);
+      transform: translateY(-3px);
+    }
+
+    .intro::before {
+      position: absolute;
+      z-index: -1;
+      top: 17%;
+      right: 12%;
+      width: 14px;
+      aspect-ratio: 1;
+      border: 1px solid color-mix(in srgb, var(--accent) 48%, transparent);
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--accent) 18%, transparent);
+      box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 40%, transparent);
+      content: "";
+      animation: moteFloat 7s ease-in-out infinite;
+      pointer-events: none;
     }
 
     .intro::after {
@@ -554,6 +613,8 @@
         0 0 0 38px color-mix(in srgb, var(--accent) 3%, transparent);
       content: "";
       pointer-events: none;
+      transform-origin: 50% 50%;
+      animation: ringDrift 36s linear infinite;
     }
 
     .intro-kicker {
@@ -575,6 +636,7 @@
       background: var(--accent);
       box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 13%, transparent);
       content: "";
+      animation: signalPulse 2.4s ease-in-out infinite;
     }
 
     .intro h1 {
@@ -589,6 +651,13 @@
       font-style: italic;
       font-weight: 400;
       letter-spacing: -.075em;
+      background-image: linear-gradient(105deg, var(--accent) 18%, color-mix(in srgb, var(--accent) 48%, var(--ink)) 42%, var(--accent) 66%);
+      background-size: 220% 100%;
+      background-position: 100% 0;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: titleShimmer 7s ease-in-out 1.1s infinite;
     }
 
     .lede {
@@ -599,7 +668,7 @@
 
     .index {
       padding-top: 5px;
-      animation: fadeInUp .7s .14s both;
+      animation: indexArrive .85s cubic-bezier(.16, 1, .3, 1) .14s both;
     }
 
     .index-head {
@@ -626,6 +695,18 @@
 
     .link-item {
       border: 0;
+      animation: cardArrive .7s cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    .link-item:nth-child(1) { animation-delay: .25s; }
+    .link-item:nth-child(2) { animation-delay: .38s; }
+    .link-item:nth-child(3) { animation-delay: .51s; }
+    .link-item:nth-child(4) { animation-delay: .64s; }
+    .link-item:nth-child(n + 5) { animation-delay: .76s; }
+
+    .link-row > * {
+      position: relative;
+      z-index: 1;
     }
 
     .link-row {
@@ -643,11 +724,24 @@
         border-color .2s ease,
         background-color .2s ease,
         box-shadow .2s ease,
-        transform .2s ease;
+        transform .32s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .link-row::after {
+      position: absolute;
+      z-index: 0;
+      inset: -60% auto -60% -85%;
+      width: 42%;
+      background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 9%, transparent), transparent);
+      content: "";
+      pointer-events: none;
+      transform: skewX(-20deg);
+      transition: left .65s cubic-bezier(.2, .8, .2, 1);
     }
 
     .link-row::before {
       position: absolute;
+      z-index: 2;
       inset: 14px auto 14px 0;
       width: 3px;
       border-radius: 0 3px 3px 0;
@@ -726,7 +820,11 @@
         border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
         background: var(--surface-raised);
         box-shadow: var(--card-shadow);
-        transform: translateY(-3px);
+        transform: translateY(-5px) scale(1.012);
+      }
+
+      .link-row:hover::after {
+        left: 145%;
       }
 
       .link-row:hover::before {
@@ -747,8 +845,69 @@
     }
 
     .footer {
+      position: relative;
       margin-top: clamp(52px, 9vh, 96px);
       padding-top: 17px;
+    }
+
+    .footer::before {
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 28%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      content: "";
+      animation: footerGleam 8s ease-in-out 2s infinite;
+    }
+
+    @keyframes atmosphereDrift {
+      0% { transform: translate3d(-2%, -1%, 0) rotate(-5deg) scale(1); }
+      100% { transform: translate3d(2%, 2%, 0) rotate(5deg) scale(1.08); }
+    }
+
+    @keyframes logoBreathe {
+      0%, 100% { box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 22%, transparent); }
+      50% { box-shadow: 0 5px 22px color-mix(in srgb, var(--accent) 42%, transparent); }
+    }
+
+    @keyframes heroArrive {
+      from { opacity: 0; transform: translateY(28px) scale(.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes indexArrive {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes cardArrive {
+      from { opacity: 0; transform: translateY(20px) scale(.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes moteFloat {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(.85); }
+      50% { transform: translate3d(-18px, 20px, 0) scale(1.2); }
+    }
+
+    @keyframes ringDrift {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes signalPulse {
+      0%, 100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent); }
+      50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 3%, transparent); }
+    }
+
+    @keyframes titleShimmer {
+      0%, 18% { background-position: 100% 0; }
+      48%, 100% { background-position: -120% 0; }
+    }
+
+    @keyframes footerGleam {
+      0%, 100% { transform: translateX(0); opacity: .25; }
+      50% { transform: translateX(260%); opacity: .9; }
     }
 
     @media (max-width: 860px) {
@@ -810,8 +969,21 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+
+      .page,
       .intro,
-      .index { animation: none; }
+      .index,
+      .link-item {
+        animation: none !important;
+      }
     }
   </style>
 </head>
