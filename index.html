@@ -153,7 +153,7 @@
       text-decoration: none;
     }
 
-    .wordmark span { color: var(--muted); }
+    .wordmark-name span { color: var(--muted); }
 
     .masthead-right {
       display: flex;
@@ -511,23 +511,27 @@
       font-size: 1.3rem;
     }
 
-    .wordmark::before {
+    .wordmark-mark {
       display: grid;
       width: 1.8rem;
       height: 1.8rem;
+      flex: 0 0 auto;
       place-items: center;
       color: var(--bg);
       background: var(--accent);
       border-radius: 7px;
-      content: "G";
+      font-family: var(--serif);
       font-size: 1.12rem;
+      font-weight: 600;
       line-height: 1;
       box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 25%, transparent);
       animation: logoBreathe 4s ease-in-out infinite;
       transition: transform .3s cubic-bezier(.2, .8, .2, 1), box-shadow .3s ease;
     }
 
-    .wordmark:hover::before {
+    .wordmark-name { white-space: nowrap; }
+
+    .wordmark:hover .wordmark-mark {
       transform: rotate(-12deg) scale(1.12);
       box-shadow: 0 7px 22px color-mix(in srgb, var(--accent) 38%, transparent);
     }
@@ -761,6 +765,7 @@
     .row-icon {
       width: 1.05rem;
       height: 1.05rem;
+      cursor: default;
     }
 
     .row-title {
@@ -990,7 +995,10 @@
 <body>
   <main class="page">
     <header class="masthead">
-      <a class="wordmark" href="/">Girt<span>Hub</span></a>
+      <a class="wordmark" href="/">
+        <span class="wordmark-mark" aria-hidden="true">G</span>
+        <span class="wordmark-name">Girt<span>Hub</span></span>
+      </a>
       <div class="masthead-right">
         <p class="masthead-meta">Personal index</p>
         <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">
@@ -1060,6 +1068,12 @@
     if (countLabel) {
       countLabel.textContent = String(count).padStart(2, '0') + (count === 1 ? ' entry' : ' entries');
     }
+
+    document.querySelectorAll('.row-icon').forEach(function (icon) {
+      icon.addEventListener('click', function (event) {
+        event.preventDefault();
+      });
+    });
 
     const year = document.getElementById('year');
     if (year) year.textContent = new Date().getFullYear();
