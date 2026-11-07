@@ -633,16 +633,6 @@
       text-transform: uppercase;
     }
 
-    .intro-kicker::before {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 13%, transparent);
-      content: "";
-      animation: signalPulse 2.4s ease-in-out infinite;
-    }
-
     .intro h1 {
       max-width: none;
       font-size: clamp(3.35rem, 7.3vw, 5.7rem);
@@ -898,11 +888,6 @@
 
     @keyframes ringDrift {
       to { transform: rotate(360deg); }
-    }
-
-    @keyframes signalPulse {
-      0%, 100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent); }
-      50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 3%, transparent); }
     }
 
     @keyframes titleShimmer {
